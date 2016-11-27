@@ -9,6 +9,8 @@ package beans;
 import javax.ejb.Local;
 import entity.*;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -37,4 +39,16 @@ public interface AdminLocal {
     void removeBranch(Integer id);
     Branch getBranchDetailsById(Integer id);
     Collection<Branch> getAllBranch();
+    
+    // Manage User
+    void addNewUser(HashMap<String, Object> data);
+    void addNewUser(String name, String emailId, String password, String address, String gender, String mobileNo, Date dob, Integer branchId, Integer designationId, Integer departmentId, Boolean isActive, Boolean isOnline);
+    void updateUser(Integer id, HashMap<String, Object> data);
+    void updateUser(Integer id, String name, String emailId, String password, String address, String gender, String mobileNo, Date dob, Integer branchId, Integer designationId, Integer departmentId, Boolean isActive, Boolean isOnline);
+    void removeUser(Integer id);
+    void setUserStatus(Integer id, Boolean status);    
+    void changeUserPassword(Integer id, String password);
+    Boolean checkCredentials(String username, String password);
+    User getUserDetailsById(Integer id);
+    Collection<User> getAllUser();
 }
