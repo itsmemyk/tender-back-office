@@ -23,4 +23,18 @@ public interface AdminLocal {
     void removeDepartment(Integer id);
     Department getDepartmentDetailsById(Integer id);
     Collection<Department> getAllDepartment();
+    
+    // Manage Department
+    void addNewDesignation(String name);
+    void updateDesignation(Integer id, String name);
+    void removeDesignation(Integer id);
+    Designation getDesignationDetailsById(Integer id);
+    Collection<Designation> getAllDesignation();
+    
+    // Manage Branch
+    void addNewBranch(String name);
+    void updateBranch(Integer id, String name, String address, String mobileNo);
+    void removeBranch(Integer id);
+    Branch getBranchDetailsById(Integer id);
+    Collection<Branch> getAllBranch();
 }
