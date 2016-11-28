@@ -8,6 +8,8 @@ package ws;
 
 import beans.AdminLocal;
 import entity.Branch;
+import entity.CircularNotice;
+import entity.CircularNoticeDetails;
 import entity.Department;
 import entity.Designation;
 import entity.User;
@@ -174,6 +176,62 @@ public class AdminWS {
     @WebMethod(operationName = "getAllUser")
     public Collection<User> getAllUser() {
         return ejbRef.getAllUser();
+    }
+
+    @WebMethod(operationName = "addNewCircularNotice")
+    @Oneway
+    public void addNewCircularNotice(@WebParam(name = "cirDate") Date cirDate, @WebParam(name = "noticeDesc") String noticeDesc, @WebParam(name = "empId") Integer empId, @WebParam(name = "viewDesignationId") Integer viewDesignationId, @WebParam(name = "viewDepartmentId") Integer viewDepartmentId, @WebParam(name = "fromDate") Date fromDate, @WebParam(name = "toDate") Date toDate) {
+        ejbRef.addNewCircularNotice(cirDate, noticeDesc, empId, viewDesignationId, viewDepartmentId, fromDate, toDate);
+    }
+
+    @WebMethod(operationName = "updateCircularNotice")
+    @Oneway
+    public void updateCircularNotice(@WebParam(name = "id") Integer id, @WebParam(name = "cirDate") Date cirDate, @WebParam(name = "noticeDesc") String noticeDesc, @WebParam(name = "empId") Integer empId, @WebParam(name = "viewDesignationId") Integer viewDesignationId, @WebParam(name = "viewDepartmentId") Integer viewDepartmentId, @WebParam(name = "fromDate") Date fromDate, @WebParam(name = "toDate") Date toDate) {
+        ejbRef.updateCircularNotice(id, cirDate, noticeDesc, empId, viewDesignationId, viewDepartmentId, fromDate, toDate);
+    }
+
+    @WebMethod(operationName = "removeCircularNotice")
+    @Oneway
+    public void removeCircularNotice(@WebParam(name = "id") Integer id) {
+        ejbRef.removeCircularNotice(id);
+    }
+
+    @WebMethod(operationName = "getCircularNoticeDetailsById")
+    public CircularNotice getCircularNoticeDetailsById(@WebParam(name = "id") Integer id) {
+        return ejbRef.getCircularNoticeDetailsById(id);
+    }
+
+    @WebMethod(operationName = "getAllCircularNotice")
+    public Collection<CircularNotice> getAllCircularNotice() {
+        return ejbRef.getAllCircularNotice();
+    }
+
+    @WebMethod(operationName = "addNewCircularNoticeDetails")
+    @Oneway
+    public void addNewCircularNoticeDetails(@WebParam(name = "noticeId") Integer noticeId, @WebParam(name = "empId") Integer empId, @WebParam(name = "isRead") Boolean isRead, @WebParam(name = "readDate") Date readDate) {
+        ejbRef.addNewCircularNoticeDetails(noticeId, empId, isRead, readDate);
+    }
+
+    @WebMethod(operationName = "updateCircularNoticeDetails")
+    @Oneway
+    public void updateCircularNoticeDetails(@WebParam(name = "id") Integer id, @WebParam(name = "noticeId") Integer noticeId, @WebParam(name = "empId") Integer empId, @WebParam(name = "isRead") Boolean isRead, @WebParam(name = "readDate") Date readDate) {
+        ejbRef.updateCircularNoticeDetails(id, noticeId, empId, isRead, readDate);
+    }
+
+    @WebMethod(operationName = "removeCircularNoticeDetails")
+    @Oneway
+    public void removeCircularNoticeDetails(@WebParam(name = "id") Integer id) {
+        ejbRef.removeCircularNoticeDetails(id);
+    }
+
+    @WebMethod(operationName = "getCircularNoticeDetailsDetailsById")
+    public CircularNoticeDetails getCircularNoticeDetailsDetailsById(@WebParam(name = "id") Integer id) {
+        return ejbRef.getCircularNoticeDetailsDetailsById(id);
+    }
+
+    @WebMethod(operationName = "getAllCircularNoticeDetails")
+    public Collection<CircularNoticeDetails> getAllCircularNoticeDetails() {
+        return ejbRef.getAllCircularNoticeDetails();
     }
     
 }
