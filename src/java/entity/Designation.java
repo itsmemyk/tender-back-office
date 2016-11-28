@@ -47,6 +47,8 @@ public class Designation implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "title")
     private String title;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "viewDesignationId")
+    private Collection<CircularNotice> circularNoticeCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "designationId")
     private Collection<User> userCollection;
 
@@ -76,6 +78,15 @@ public class Designation implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @XmlTransient
+    public Collection<CircularNotice> getCircularNoticeCollection() {
+        return circularNoticeCollection;
+    }
+
+    public void setCircularNoticeCollection(Collection<CircularNotice> circularNoticeCollection) {
+        this.circularNoticeCollection = circularNoticeCollection;
     }
 
     @XmlTransient

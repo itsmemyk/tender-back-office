@@ -15,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -30,14 +29,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Mayank
  */
 @Entity
-@Table(name = "branch")
+@Table(name = "company_mst")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Branch.findAll", query = "SELECT b FROM Branch b"),
-    @NamedQuery(name = "Branch.findById", query = "SELECT b FROM Branch b WHERE b.id = :id"),
-    @NamedQuery(name = "Branch.findByName", query = "SELECT b FROM Branch b WHERE b.name = :name"),
-    @NamedQuery(name = "Branch.findByMobileNo", query = "SELECT b FROM Branch b WHERE b.mobileNo = :mobileNo")})
-public class Branch implements Serializable {
+    @NamedQuery(name = "CompanyMst.findAll", query = "SELECT c FROM CompanyMst c"),
+    @NamedQuery(name = "CompanyMst.findById", query = "SELECT c FROM CompanyMst c WHERE c.id = :id"),
+    @NamedQuery(name = "CompanyMst.findByName", query = "SELECT c FROM CompanyMst c WHERE c.name = :name"),
+    @NamedQuery(name = "CompanyMst.findByIsActive", query = "SELECT c FROM CompanyMst c WHERE c.isActive = :isActive")})
+public class CompanyMst implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,37 +45,29 @@ public class Branch implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 200)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Lob
-    @Size(min = 1, max = 65535)
-    @Column(name = "address")
-    private String address;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "mobile_no")
-    private String mobileNo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchId")
-    private Collection<TenderBranch> tenderBranchCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "branchId")
-    private Collection<User> userCollection;
+    @Column(name = "is_active")
+    private boolean isActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
+    private Collection<QuotationDetails> quotationDetailsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
+    private Collection<ItemMst> itemMstCollection;
 
-    public Branch() {
+    public CompanyMst() {
     }
 
-    public Branch(Integer id) {
+    public CompanyMst(Integer id) {
         this.id = id;
     }
 
-    public Branch(Integer id, String name, String address, String mobileNo) {
+    public CompanyMst(Integer id, String name, boolean isActive) {
         this.id = id;
         this.name = name;
-        this.address = address;
-        this.mobileNo = mobileNo;
+        this.isActive = isActive;
     }
 
     public Integer getId() {
@@ -95,38 +86,30 @@ public class Branch implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public boolean getIsActive() {
+        return isActive;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getMobileNo() {
-        return mobileNo;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @XmlTransient
-    public Collection<TenderBranch> getTenderBranchCollection() {
-        return tenderBranchCollection;
+    public Collection<QuotationDetails> getQuotationDetailsCollection() {
+        return quotationDetailsCollection;
     }
 
-    public void setTenderBranchCollection(Collection<TenderBranch> tenderBranchCollection) {
-        this.tenderBranchCollection = tenderBranchCollection;
+    public void setQuotationDetailsCollection(Collection<QuotationDetails> quotationDetailsCollection) {
+        this.quotationDetailsCollection = quotationDetailsCollection;
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<ItemMst> getItemMstCollection() {
+        return itemMstCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setItemMstCollection(Collection<ItemMst> itemMstCollection) {
+        this.itemMstCollection = itemMstCollection;
     }
 
     @Override
@@ -139,10 +122,10 @@ public class Branch implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Branch)) {
+        if (!(object instanceof CompanyMst)) {
             return false;
         }
-        Branch other = (Branch) object;
+        CompanyMst other = (CompanyMst) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -151,7 +134,7 @@ public class Branch implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Branch[ id=" + id + " ]";
+        return "entity.CompanyMst[ id=" + id + " ]";
     }
     
 }

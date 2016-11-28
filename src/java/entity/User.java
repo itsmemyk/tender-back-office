@@ -7,8 +7,10 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,12 +21,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -101,6 +105,12 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "is_active")
     private boolean isActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empId")
+    private Collection<CircularNoticeDetails> circularNoticeDetailsCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empId")
+    private Collection<CircularNotice> circularNoticeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empId")
+    private Collection<DemandMst> demandMstCollection;
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Branch branchId;
@@ -218,6 +228,33 @@ public class User implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    @XmlTransient
+    public Collection<CircularNoticeDetails> getCircularNoticeDetailsCollection() {
+        return circularNoticeDetailsCollection;
+    }
+
+    public void setCircularNoticeDetailsCollection(Collection<CircularNoticeDetails> circularNoticeDetailsCollection) {
+        this.circularNoticeDetailsCollection = circularNoticeDetailsCollection;
+    }
+
+    @XmlTransient
+    public Collection<CircularNotice> getCircularNoticeCollection() {
+        return circularNoticeCollection;
+    }
+
+    public void setCircularNoticeCollection(Collection<CircularNotice> circularNoticeCollection) {
+        this.circularNoticeCollection = circularNoticeCollection;
+    }
+
+    @XmlTransient
+    public Collection<DemandMst> getDemandMstCollection() {
+        return demandMstCollection;
+    }
+
+    public void setDemandMstCollection(Collection<DemandMst> demandMstCollection) {
+        this.demandMstCollection = demandMstCollection;
     }
 
     public Branch getBranchId() {

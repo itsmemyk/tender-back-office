@@ -47,6 +47,10 @@ public class Department implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "title")
     private String title;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "viewDeptId")
+    private Collection<CircularNotice> circularNoticeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deptId")
+    private Collection<DemandMst> demandMstCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departmentId")
     private Collection<User> userCollection;
 
@@ -76,6 +80,24 @@ public class Department implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @XmlTransient
+    public Collection<CircularNotice> getCircularNoticeCollection() {
+        return circularNoticeCollection;
+    }
+
+    public void setCircularNoticeCollection(Collection<CircularNotice> circularNoticeCollection) {
+        this.circularNoticeCollection = circularNoticeCollection;
+    }
+
+    @XmlTransient
+    public Collection<DemandMst> getDemandMstCollection() {
+        return demandMstCollection;
+    }
+
+    public void setDemandMstCollection(Collection<DemandMst> demandMstCollection) {
+        this.demandMstCollection = demandMstCollection;
     }
 
     @XmlTransient

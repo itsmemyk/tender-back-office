@@ -4,6 +4,15 @@
     <service name="AdminWS">
       <implementation-class>ws.AdminWS</implementation-class>
     </service>
+    <service name="BranchDepartment">
+      <implementation-class>ws.BranchDepartment</implementation-class>
+    </service>
+    <service name="StoreManagerWS">
+      <implementation-class>ws.StoreManagerWS</implementation-class>
+    </service>
+    <service name="SupplierClientWS">
+      <implementation-class>ws.SupplierClientWS</implementation-class>
+    </service>
   </services>
   <clients>
     <client name="AdminWS">
