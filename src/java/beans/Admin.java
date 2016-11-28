@@ -249,4 +249,171 @@ public class Admin implements AdminLocal {
         User u = em.createNamedQuery("User.findByEmailId", User.class).setParameter("emailId", username).getSingleResult();
         return u != null ? u.getPassword() == password : false;
     }
+
+    @Override
+    public void addNewCircularNotice(Date cirDate, String noticeDesc, Integer empId, Integer viewDesignationId, Integer viewDepartmentId, Date fromDate, Date toDate) {
+        Collection<CircularNotice> noticeCollection;
+        User emp = em.find(User.class, empId);
+        Designation desg = em.find(Designation.class, viewDesignationId);
+        Department dept = em.find(Department.class, viewDepartmentId);
+        
+        CircularNotice notice = new CircularNotice();
+        notice.setCirDate(cirDate);
+        notice.setEmpId(emp);
+        notice.setFromDate(fromDate);
+        notice.setNoticeDesc(noticeDesc);
+        notice.setToDate(toDate);
+        notice.setViewDesignationId(desg);
+        notice.setViewDeptId(dept);
+        
+        em.persist(notice);
+        
+        noticeCollection = emp.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            emp.setCircularNoticeCollection(noticeCollection);
+            em.merge(emp);
+        }
+        
+        noticeCollection = desg.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            desg.setCircularNoticeCollection(noticeCollection);
+            em.merge(desg);
+        }
+        
+        noticeCollection = dept.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            dept.setCircularNoticeCollection(noticeCollection);
+            em.merge(dept);
+        }
+    }
+
+    @Override
+    public void updateCircularNotice(Integer id, Date cirDate, String noticeDesc, Integer empId, Integer viewDesignationId, Integer viewDepartmentId, Date fromDate, Date toDate) {
+        Collection<CircularNotice> noticeCollection;
+        User emp = em.find(User.class, empId);
+        Designation desg = em.find(Designation.class, viewDesignationId);
+        Department dept = em.find(Department.class, viewDepartmentId);
+        
+        CircularNotice notice = this.getCircularNoticeDetailsById(id);
+        notice.setCirDate(cirDate);
+        notice.setEmpId(emp);
+        notice.setFromDate(fromDate);
+        notice.setNoticeDesc(noticeDesc);
+        notice.setToDate(toDate);
+        notice.setViewDesignationId(desg);
+        notice.setViewDeptId(dept);        
+        
+        noticeCollection = emp.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            emp.setCircularNoticeCollection(noticeCollection);
+            em.merge(emp);
+        }
+        
+        noticeCollection = desg.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            desg.setCircularNoticeCollection(noticeCollection);
+            em.merge(desg);
+        }
+        
+        noticeCollection = dept.getCircularNoticeCollection();
+        if(!noticeCollection.contains(notice)) {
+            noticeCollection.add(notice);
+            dept.setCircularNoticeCollection(noticeCollection);
+            em.merge(dept);
+        }
+        em.merge(notice);
+    }
+
+    @Override
+    public void removeCircularNotice(Integer id) {
+        CircularNotice details = this.getCircularNoticeDetailsById(id);
+        em.remove(details);
+    }
+
+    @Override
+    public CircularNotice getCircularNoticeDetailsById(Integer id) {
+        return em.find(CircularNotice.class, id);
+    }
+
+    @Override
+    public Collection<CircularNotice> getAllCircularNotice() {
+        return em.createNamedQuery("CircularNotice.findAll", CircularNotice.class).getResultList();
+    }
+
+    @Override
+    public void addNewCircularNoticeDetails(Integer noticeId, Integer empId, Boolean isRead, Date readDate) {
+        Collection<CircularNoticeDetails> detailsCollection;
+        User emp = em.find(User.class, empId);
+        CircularNotice notice = em.find(CircularNotice.class, noticeId);
+        
+        CircularNoticeDetails details = new CircularNoticeDetails();
+        details.setCircularNoticeId(notice);
+        details.setEmpId(emp);
+        details.setIsRead(isRead);
+        details.setReadDate(readDate);
+        em.persist(details);
+        
+        detailsCollection = emp.getCircularNoticeDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            emp.setCircularNoticeDetailsCollection(detailsCollection);
+            em.merge(emp);
+        }
+        
+        detailsCollection = notice.getCircularNoticeDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            notice.setCircularNoticeDetailsCollection(detailsCollection);
+            em.merge(notice);
+        }
+    }
+
+    @Override
+    public void updateCircularNoticeDetails(Integer noticeId, Integer id, Integer empId, Boolean isRead, Date readDate) {
+        Collection<CircularNoticeDetails> detailsCollection;
+        User emp = em.find(User.class, empId);
+        CircularNotice notice = em.find(CircularNotice.class, noticeId);
+        
+        CircularNoticeDetails details = this.getCircularNoticeDetailsDetailsById(id);
+        details.setCircularNoticeId(notice);
+        details.setEmpId(emp);
+        details.setIsRead(isRead);
+        details.setReadDate(readDate);
+        
+        detailsCollection = emp.getCircularNoticeDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            emp.setCircularNoticeDetailsCollection(detailsCollection);
+            em.merge(emp);
+        }
+        
+        detailsCollection = notice.getCircularNoticeDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            notice.setCircularNoticeDetailsCollection(detailsCollection);
+            em.merge(notice);
+        }
+        em.merge(details);
+    }
+
+    @Override
+    public void removeCircularNoticeDetails(Integer id) {
+        CircularNoticeDetails details = this.getCircularNoticeDetailsDetailsById(id);
+        em.remove(details);
+    }
+
+    @Override
+    public CircularNoticeDetails getCircularNoticeDetailsDetailsById(Integer id) {
+        return em.find(CircularNoticeDetails.class, id);
+    }
+
+    @Override
+    public Collection<CircularNoticeDetails> getAllCircularNoticeDetails() {
+        return em.createNamedQuery("CircularNoticeDetails.findAll", CircularNoticeDetails.class).getResultList();
+    }
 }

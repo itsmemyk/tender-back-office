@@ -51,4 +51,17 @@ public interface AdminLocal {
     Boolean checkCredentials(String username, String password);
     User getUserDetailsById(Integer id);
     Collection<User> getAllUser();
+
+    // Manage Circular Notice
+    void addNewCircularNotice(Date cirDate, String noticeDesc, Integer empId, Integer viewDesignationId, Integer viewDepartmentId, Date fromDate, Date toDate);
+    void updateCircularNotice(Integer id, Date cirDate, String noticeDesc, Integer empId, Integer viewDesignationId, Integer viewDepartmentId, Date fromDate, Date toDate);
+    void removeCircularNotice(Integer id);
+    CircularNotice getCircularNoticeDetailsById(Integer id);
+    Collection<CircularNotice> getAllCircularNotice();
+    
+    void addNewCircularNoticeDetails(Integer noticeId, Integer empId, Boolean isRead, Date readDate);
+    void updateCircularNoticeDetails(Integer id, Integer noticeId, Integer empId, Boolean isRead, Date readDate);
+    void removeCircularNoticeDetails(Integer id);
+    CircularNoticeDetails getCircularNoticeDetailsDetailsById(Integer id);
+    Collection<CircularNoticeDetails> getAllCircularNoticeDetails();    
 }
