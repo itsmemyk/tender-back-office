@@ -4,8 +4,8 @@
     <service name="AdminWS">
       <implementation-class>ws.AdminWS</implementation-class>
     </service>
-    <service name="BranchDepartment">
-      <implementation-class>ws.BranchDepartment</implementation-class>
+    <service name="BranchDepartmentWS">
+      <implementation-class>ws.BranchDepartmentWS</implementation-class>
     </service>
     <service name="StoreManagerWS">
       <implementation-class>ws.StoreManagerWS</implementation-class>

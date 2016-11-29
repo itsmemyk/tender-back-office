@@ -10,6 +10,9 @@ import beans.StoreManagerLocal;
 import entity.CompanyMst;
 import entity.ItemMst;
 import entity.StockMst;
+import entity.TenderBranch;
+import entity.TenderDetails;
+import entity.TenderMst;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -112,6 +115,90 @@ public class StoreManagerWS {
     @WebMethod(operationName = "getAllStock")
     public Collection<StockMst> getAllStock() {
         return ejbRef.getAllStock();
+    }
+
+    @WebMethod(operationName = "addNewTender")
+    @Oneway
+    public void addNewTender(@WebParam(name = "pubDate") Date pubDate, @WebParam(name = "pubDesc") String pubDesc, @WebParam(name = "submittedDate") Date submittedDate, @WebParam(name = "emd") double emd, @WebParam(name = "docCost") double docCost, @WebParam(name = "deadlineDate") Date deadlineDate, @WebParam(name = "deadlineTime") Date deadlineTime, @WebParam(name = "openingDate") Date openingDate, @WebParam(name = "pressNoteLoc") String pressNoteLoc, @WebParam(name = "isApproved") Boolean isApproved) {
+        ejbRef.addNewTender(pubDate, pubDesc, submittedDate, emd, docCost, deadlineDate, deadlineTime, openingDate, pressNoteLoc, isApproved);
+    }
+
+    @WebMethod(operationName = "updateTender")
+    @Oneway
+    public void updateTender(@WebParam(name = "id") Integer id, @WebParam(name = "pubDate") Date pubDate, @WebParam(name = "pubDesc") String pubDesc, @WebParam(name = "submittedDate") Date submittedDate, @WebParam(name = "emd") double emd, @WebParam(name = "docCost") double docCost, @WebParam(name = "deadlineDate") Date deadlineDate, @WebParam(name = "deadlineTime") Date deadlineTime, @WebParam(name = "openingDate") Date openingDate, @WebParam(name = "pressNoteLoc") String pressNoteLoc, @WebParam(name = "isApproved") Boolean isApproved) {
+        ejbRef.updateTender(id, pubDate, pubDesc, submittedDate, emd, docCost, deadlineDate, deadlineTime, openingDate, pressNoteLoc, isApproved);
+    }
+
+    @WebMethod(operationName = "removeTender")
+    @Oneway
+    public void removeTender(@WebParam(name = "id") Integer id) {
+        ejbRef.removeTender(id);
+    }
+
+    @WebMethod(operationName = "getTenderDetailsById")
+    public TenderMst getTenderDetailsById(@WebParam(name = "id") Integer id) {
+        return ejbRef.getTenderDetailsById(id);
+    }
+
+    @WebMethod(operationName = "getAllTender")
+    public Collection<TenderMst> getAllTender() {
+        return ejbRef.getAllTender();
+    }
+
+    @WebMethod(operationName = "addNewTenderDetails")
+    @Oneway
+    public void addNewTenderDetails(@WebParam(name = "tenderId") Integer tenderId, @WebParam(name = "itemId") Integer itemId, @WebParam(name = "qty") Integer qty, @WebParam(name = "remark") String remark) {
+        ejbRef.addNewTenderDetails(tenderId, itemId, qty, remark);
+    }
+
+    @WebMethod(operationName = "updateTenderDetails")
+    @Oneway
+    public void updateTenderDetails(@WebParam(name = "id") Integer id, @WebParam(name = "tenderId") Integer tenderId, @WebParam(name = "itemId") Integer itemId, @WebParam(name = "qty") Integer qty, @WebParam(name = "remark") String remark) {
+        ejbRef.updateTenderDetails(id, tenderId, itemId, qty, remark);
+    }
+
+    @WebMethod(operationName = "removeTenderDetails")
+    @Oneway
+    public void removeTenderDetails(@WebParam(name = "id") Integer id) {
+        ejbRef.removeTenderDetails(id);
+    }
+
+    @WebMethod(operationName = "getTenderDetailsDetailsById")
+    public TenderDetails getTenderDetailsDetailsById(@WebParam(name = "id") Integer id) {
+        return ejbRef.getTenderDetailsDetailsById(id);
+    }
+
+    @WebMethod(operationName = "getAllTenderDetails")
+    public Collection<TenderDetails> getAllTenderDetails() {
+        return ejbRef.getAllTenderDetails();
+    }
+
+    @WebMethod(operationName = "addNewTenderBranch")
+    @Oneway
+    public void addNewTenderBranch(@WebParam(name = "tenderId") Integer tenderId, @WebParam(name = "branchId") Integer branchId) {
+        ejbRef.addNewTenderBranch(tenderId, branchId);
+    }
+
+    @WebMethod(operationName = "updateTenderBranch")
+    @Oneway
+    public void updateTenderBranch(@WebParam(name = "id") Integer id, @WebParam(name = "tenderId") Integer tenderId, @WebParam(name = "branchId") Integer branchId) {
+        ejbRef.updateTenderBranch(id, tenderId, branchId);
+    }
+
+    @WebMethod(operationName = "removeTenderBranch")
+    @Oneway
+    public void removeTenderBranch(@WebParam(name = "id") Integer id) {
+        ejbRef.removeTenderBranch(id);
+    }
+
+    @WebMethod(operationName = "getTenderBranchDetailsById")
+    public TenderBranch getTenderBranchDetailsById(@WebParam(name = "id") Integer id) {
+        return ejbRef.getTenderBranchDetailsById(id);
+    }
+
+    @WebMethod(operationName = "getAllTenderBranch")
+    public Collection<TenderBranch> getAllTenderBranch() {
+        return ejbRef.getAllTenderBranch();
     }
     
 }

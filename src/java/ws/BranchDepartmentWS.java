@@ -22,9 +22,9 @@ import javax.jws.WebParam;
  *
  * @author Mayank
  */
-@WebService(serviceName = "BranchDepartment")
+@WebService(serviceName = "BranchDepartmentWS")
 @Stateless()
-public class BranchDepartment {
+public class BranchDepartmentWS {
     @EJB
     private BranchDepartmentLocal ejbRef;// Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Web Service Operation")
