@@ -80,7 +80,7 @@ public class SupplierClient implements SupplierClientLocal {
     }
 
     @Override
-    public void removeSupploer(Integer id) {
+    public void removeSupplier(Integer id) {
         Supplier s = this.getSupplierDetailsById(id);
         em.remove(s);
     }
@@ -93,6 +93,268 @@ public class SupplierClient implements SupplierClientLocal {
     @Override
     public Collection<Supplier> getAllSupplier() {
         return em.createNamedQuery("Supplier.findAll", Supplier.class).getResultList();
+    }
+
+    @Override
+    public void newEMDRegistration(Integer tenderId, Integer supplierId, Date issuedDate, double emdAmount, String emdBy, String chequeNo, String chequeDate, Boolean isApproved) {
+        Collection<EmdIssue> emdCollections;
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        Supplier supp = em.find(Supplier.class, supplierId);
+        
+        EmdIssue emd = new EmdIssue();
+        emd.setTenderId(tender);
+        emd.setSupplierId(supp);
+        emd.setIssuedDate(issuedDate);
+        emd.setEmdAmount(emdAmount);
+        emd.setEmdBy(emdBy);
+        emd.setChequeDate(chequeDate);
+        emd.setChequeNo(chequeNo);
+        emd.setIsApproved(isApproved);
+        em.persist(emd);
+        
+        emdCollections = tender.getEmdIssueCollection();
+        if(!emdCollections.contains(emd)) {
+            emdCollections.add(emd);
+            tender.setEmdIssueCollection(emdCollections);
+            em.merge(tender);
+        }
+        emdCollections = supp.getEmdIssueCollection();
+        if(!emdCollections.contains(emd)) {
+            emdCollections.add(emd);
+            supp.setEmdIssueCollection(emdCollections);
+            em.merge(supp);
+        }
+    }
+
+    @Override
+    public void updateEMD(Integer id, Integer tenderId, Integer supplierId, Date issuedDate, double emdAmount, String emdBy, String chequeNo, String chequeDate, Boolean isApproved) {
+        Collection<EmdIssue> emdCollections;
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        Supplier supp = em.find(Supplier.class, supplierId);
+        
+        EmdIssue emd = this.getEMDDetailsById(id);
+        emd.setTenderId(tender);
+        emd.setSupplierId(supp);
+        emd.setIssuedDate(issuedDate);
+        emd.setEmdAmount(emdAmount);
+        emd.setEmdBy(emdBy);
+        emd.setChequeDate(chequeDate);
+        emd.setChequeNo(chequeNo);
+        emd.setIsApproved(isApproved);
+        
+        emdCollections = tender.getEmdIssueCollection();
+        if(!emdCollections.contains(emd)) {
+            emdCollections.add(emd);
+            tender.setEmdIssueCollection(emdCollections);
+            em.merge(tender);
+        }
+        emdCollections = supp.getEmdIssueCollection();
+        if(!emdCollections.contains(emd)) {
+            emdCollections.add(emd);
+            supp.setEmdIssueCollection(emdCollections);
+            em.merge(supp);
+        }        
+        em.merge(emd);
+    }
+
+    @Override
+    public void removeEMD(Integer id) {
+        em.remove(this.getEMDDetailsById(id));
+    }
+
+    @Override
+    public EmdIssue getEMDDetailsById(Integer id) {
+        return em.find(EmdIssue.class, id);
+    }
+
+    @Override
+    public Collection<EmdIssue> getAllEMD() {
+        return em.createNamedQuery("EmdIssue.findAll", EmdIssue.class).getResultList();
+    }
+
+    @Override
+    public void addNewQuotation(Integer tenderId, Date qDate, Integer supplierId, String remark) {
+        Collection<QuotationMst> qqCollections;
+        Supplier supp = em.find(Supplier.class, supplierId);
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        
+        QuotationMst qq = new QuotationMst();
+        qq.setQDate(qDate);
+        qq.setRemark(remark);
+        qq.setTenderId(tender);
+        qq.setSupplierId(supp);
+        
+        em.persist(qq);
+        
+        qqCollections = supp.getQuotationMstCollection();
+        if(!qqCollections.contains(qq)) {
+            qqCollections.add(qq);
+            supp.setQuotationMstCollection(qqCollections);
+            em.merge(supp);
+        }
+        qqCollections = tender.getQuotationMstCollection();
+        if(!qqCollections.contains(qq)) {
+            qqCollections.add(qq);
+            tender.setQuotationMstCollection(qqCollections);
+            em.merge(tender);
+        }
+    }
+
+    @Override
+    public void updateQuotation(Integer id, Integer tenderId, Date qDate, Integer supplierId, String remark) {
+        Collection<QuotationMst> qqCollections;
+        Supplier supp = em.find(Supplier.class, supplierId);
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        
+        QuotationMst qq = this.getQuotationDetailsById(id);
+        qq.setQDate(qDate);
+        qq.setRemark(remark);
+        qq.setTenderId(tender);
+        qq.setSupplierId(supp);        
+        
+        qqCollections = supp.getQuotationMstCollection();
+        if(!qqCollections.contains(qq)) {
+            qqCollections.add(qq);
+            supp.setQuotationMstCollection(qqCollections);
+            em.merge(supp);
+        }
+        qqCollections = tender.getQuotationMstCollection();
+        if(!qqCollections.contains(qq)) {
+            qqCollections.add(qq);
+            tender.setQuotationMstCollection(qqCollections);
+            em.merge(tender);
+        }
+        em.merge(qq);
+    }
+
+    @Override
+    public void removeQuotation(Integer id) {
+        em.remove(this.getQuotationDetailsById(id));
+    }
+
+    @Override
+    public QuotationMst getQuotationDetailsById(Integer id) {
+        return em.find(QuotationMst.class, id);
+    }
+
+    @Override
+    public Collection<QuotationMst> getAllQuotation() {
+        return em.createNamedQuery("QuotationMst.findAll", QuotationMst.class).getResultList();
+    }
+
+    @Override
+    public void addNewQuotationDetails(Integer quotationId, Integer tenderId, Integer itemId, Integer unitWiseQty, double unitWisePrice, Integer companyId, String remark, Boolean isIssued, String itemQty) {
+        Collection<QuotationDetails> detailsCollection;
+        CompanyMst com = em.find(CompanyMst.class, companyId);
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        QuotationMst qq = em.find(QuotationMst.class, quotationId);
+        ItemMst item = em.find(ItemMst.class, itemId);
+        
+        QuotationDetails details = new QuotationDetails();
+        details.setCompanyId(com);
+        details.setQuotationId(qq);
+        details.setTenderId(tender);
+        details.setIsIssued(isIssued);
+        details.setItemId(item);
+        details.setItemQty(itemQty);
+        details.setUnitWisePrice(unitWisePrice);
+        details.setUnitWiseQty(unitWiseQty);
+        details.setRemark(remark);
+        details.setItemQty(itemQty);
+        em.persist(details);
+        
+        detailsCollection = com.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            com.setQuotationDetailsCollection(detailsCollection);
+            em.merge(com);
+        }
+        
+        detailsCollection = tender.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            tender.setQuotationDetailsCollection(detailsCollection);
+            em.merge(tender);
+        }
+        
+        detailsCollection = qq.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            qq.setQuotationDetailsCollection(detailsCollection);
+            em.merge(qq);
+        }
+        
+        detailsCollection = item.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            item.setQuotationDetailsCollection(detailsCollection);
+            em.merge(item);
+        }
+    }
+
+    @Override
+    public void updateQuotationDetails(Integer id, Integer quotationId, Integer tenderId, Integer itemId, Integer unitWiseQty, double unitWisePrice, Integer companyId, String remark, Boolean isIssued, String itemQty) {
+        Collection<QuotationDetails> detailsCollection;
+        CompanyMst com = em.find(CompanyMst.class, companyId);
+        TenderMst tender = em.find(TenderMst.class, tenderId);
+        QuotationMst qq = em.find(QuotationMst.class, quotationId);
+        ItemMst item = em.find(ItemMst.class, itemId);
+        
+        QuotationDetails details = this.getQuotationDetailsDetailsById(id);
+        details.setCompanyId(com);
+        details.setQuotationId(qq);
+        details.setTenderId(tender);
+        details.setIsIssued(isIssued);
+        details.setItemId(item);
+        details.setItemQty(itemQty);
+        details.setUnitWisePrice(unitWisePrice);
+        details.setUnitWiseQty(unitWiseQty);
+        details.setRemark(remark);
+        details.setItemQty(itemQty);
+        
+        detailsCollection = com.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            com.setQuotationDetailsCollection(detailsCollection);
+            em.merge(com);
+        }
+        
+        detailsCollection = tender.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            tender.setQuotationDetailsCollection(detailsCollection);
+            em.merge(tender);
+        }
+        
+        detailsCollection = qq.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            qq.setQuotationDetailsCollection(detailsCollection);
+            em.merge(qq);
+        }
+        
+        detailsCollection = item.getQuotationDetailsCollection();
+        if(!detailsCollection.contains(details)) {
+            detailsCollection.add(details);
+            item.setQuotationDetailsCollection(detailsCollection);
+            em.merge(item);
+        }
+        em.merge(details);
+    }
+
+    @Override
+    public void removeQuotationDetails(Integer id) {
+        em.remove(this.getQuotationDetailsDetailsById(id));
+    }
+
+    @Override
+    public QuotationDetails getQuotationDetailsDetailsById(Integer id) {
+        return em.find(QuotationDetails.class, id);
+    }
+
+    @Override
+    public Collection<QuotationDetails> getAllQuotationDetails() {
+        return em.createNamedQuery("QuotationDetails.findAll", QuotationDetails.class).getResultList();
     }
 
 }
