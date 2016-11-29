@@ -172,6 +172,8 @@ public class Supplier implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId")
     private Collection<PurchaseOrderMst> purchaseOrderMstCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId")
+    private Collection<QuotationMst> quotationMstCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId")
     private Collection<DemandDetails> demandDetailsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supplierId")
     private Collection<EmdIssue> emdIssueCollection;
@@ -391,6 +393,15 @@ public class Supplier implements Serializable {
 
     public void setPurchaseOrderMstCollection(Collection<PurchaseOrderMst> purchaseOrderMstCollection) {
         this.purchaseOrderMstCollection = purchaseOrderMstCollection;
+    }
+
+    @XmlTransient
+    public Collection<QuotationMst> getQuotationMstCollection() {
+        return quotationMstCollection;
+    }
+
+    public void setQuotationMstCollection(Collection<QuotationMst> quotationMstCollection) {
+        this.quotationMstCollection = quotationMstCollection;
     }
 
     @XmlTransient

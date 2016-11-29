@@ -111,6 +111,8 @@ public class TenderMst implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tenderId")
     private Collection<QuotationDetails> quotationDetailsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tenderId")
+    private Collection<QuotationMst> quotationMstCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tenderId")
     private Collection<EmdIssue> emdIssueCollection;
 
     public TenderMst() {
@@ -256,6 +258,15 @@ public class TenderMst implements Serializable {
 
     public void setQuotationDetailsCollection(Collection<QuotationDetails> quotationDetailsCollection) {
         this.quotationDetailsCollection = quotationDetailsCollection;
+    }
+
+    @XmlTransient
+    public Collection<QuotationMst> getQuotationMstCollection() {
+        return quotationMstCollection;
+    }
+
+    public void setQuotationMstCollection(Collection<QuotationMst> quotationMstCollection) {
+        this.quotationMstCollection = quotationMstCollection;
     }
 
     @XmlTransient

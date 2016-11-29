@@ -16,7 +16,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -38,9 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "QuotationMst.findAll", query = "SELECT q FROM QuotationMst q"),
     @NamedQuery(name = "QuotationMst.findById", query = "SELECT q FROM QuotationMst q WHERE q.id = :id"),
-    @NamedQuery(name = "QuotationMst.findByTenderId", query = "SELECT q FROM QuotationMst q WHERE q.tenderId = :tenderId"),
-    @NamedQuery(name = "QuotationMst.findByQDate", query = "SELECT q FROM QuotationMst q WHERE q.qDate = :qDate"),
-    @NamedQuery(name = "QuotationMst.findBySupplierId", query = "SELECT q FROM QuotationMst q WHERE q.supplierId = :supplierId")})
+    @NamedQuery(name = "QuotationMst.findByQDate", query = "SELECT q FROM QuotationMst q WHERE q.qDate = :qDate")})
 public class QuotationMst implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,17 +50,9 @@ public class QuotationMst implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "tender_id")
-    private int tenderId;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "q_date")
     @Temporal(TemporalType.DATE)
     private Date qDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "supplier_id")
-    private int supplierId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -69,6 +61,12 @@ public class QuotationMst implements Serializable {
     private String remark;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "quotationId")
     private Collection<QuotationDetails> quotationDetailsCollection;
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Supplier supplierId;
+    @JoinColumn(name = "tender_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TenderMst tenderId;
 
     public QuotationMst() {
     }
@@ -77,11 +75,9 @@ public class QuotationMst implements Serializable {
         this.id = id;
     }
 
-    public QuotationMst(Integer id, int tenderId, Date qDate, int supplierId, String remark) {
+    public QuotationMst(Integer id, Date qDate, String remark) {
         this.id = id;
-        this.tenderId = tenderId;
         this.qDate = qDate;
-        this.supplierId = supplierId;
         this.remark = remark;
     }
 
@@ -93,28 +89,12 @@ public class QuotationMst implements Serializable {
         this.id = id;
     }
 
-    public int getTenderId() {
-        return tenderId;
-    }
-
-    public void setTenderId(int tenderId) {
-        this.tenderId = tenderId;
-    }
-
     public Date getQDate() {
         return qDate;
     }
 
     public void setQDate(Date qDate) {
         this.qDate = qDate;
-    }
-
-    public int getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
     }
 
     public String getRemark() {
@@ -132,6 +112,22 @@ public class QuotationMst implements Serializable {
 
     public void setQuotationDetailsCollection(Collection<QuotationDetails> quotationDetailsCollection) {
         this.quotationDetailsCollection = quotationDetailsCollection;
+    }
+
+    public Supplier getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Supplier supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public TenderMst getTenderId() {
+        return tenderId;
+    }
+
+    public void setTenderId(TenderMst tenderId) {
+        this.tenderId = tenderId;
     }
 
     @Override
