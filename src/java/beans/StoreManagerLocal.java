@@ -36,4 +36,23 @@ public interface StoreManagerLocal {
     void removeStock(Integer id);
     StockMst getStockDetailsById(Integer id);
     Collection<StockMst> getAllStock();
+    
+    // manage tenders
+    void addNewTender(Date pubDate, String pubDesc, Date submittedDate, double emd, double docCost, Date deadlineDate, Date deadlineTime, Date openingDate, String pressNoteLoc, Boolean isApproved);
+    void updateTender(Integer id, Date pubDate, String pubDesc, Date submittedDate, double emd, double docCost, Date deadlineDate, Date deadlineTime, Date openingDate, String pressNoteLoc, Boolean isApproved);
+    void removeTender(Integer id);
+    TenderMst getTenderDetailsById(Integer id);
+    Collection<TenderMst> getAllTender();
+    
+    void addNewTenderDetails(Integer tenderId, Integer itemId, Integer qty, String remark);
+    void updateTenderDetails(Integer id, Integer tenderId, Integer itemId, Integer qty, String remark);
+    void removeTenderDetails(Integer id);
+    TenderDetails getTenderDetailsDetailsById(Integer id);
+    Collection<TenderDetails> getAllTenderDetails();
+    
+    void addNewTenderBranch(Integer tenderId, Integer branchId);
+    void updateTenderBranch(Integer id, Integer tenderId, Integer branchId);
+    void removeTenderBranch(Integer id);
+    TenderBranch getTenderBranchDetailsById(Integer id);
+    Collection<TenderBranch> getAllTenderBranch();
 }
